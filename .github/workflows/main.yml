@@ -2,10 +2,10 @@ name: Create new post
 
 on:
   schedule:
-    - cron:  '0/5 * * * *'
+    - cron:  '5,35 * * * *'
 
 jobs:
-  format-code:
+  execute-scraper:
     runs-on: ubuntu-latest
 
     permissions:
