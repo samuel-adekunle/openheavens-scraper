@@ -10,7 +10,7 @@ import (
 	"github.com/gocolly/colly"
 )
 
-const DATE_FORMAT = "2-January-2006"
+const DATE_FORMAT = "2-January-2006-Monday"
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
 const BASE_URL = "https://rccgonline.org/open-heaven-"
 
@@ -48,10 +48,12 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 			if el.Text == string([]byte{194, 160}) {
 				mode = 3
 			} else {
-				tmp := strings.TrimSpace(el.DOM.Find("span > em, em > span").Clone().Children().Remove().End().Text())
-				if len(tmp) > 0 {
-					post.BibleReadingBody = append(post.BibleReadingBody, tmp)
-				}
+				el.ForEach("em", func(_ int, ell *colly.HTMLElement) {
+					tmp := strings.TrimSpace(removeMediaRegexp.ReplaceAllString(ell.Text, ""))
+					if len(tmp) > 0 {
+						post.BibleReadingBody = append(post.BibleReadingBody, tmp)
+					}
+				})
 			}
 		case 3:
 			if el.Text == string([]byte{194, 160}) {
