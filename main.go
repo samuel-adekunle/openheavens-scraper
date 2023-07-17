@@ -161,5 +161,8 @@ func main() {
 	post, date := scrapeToday()
 	if post != nil {
 		savePost(post, date)
+		log.Println("Post saved!")
+		return
 	}
+	log.Fatalln("Post not found!")
 }
