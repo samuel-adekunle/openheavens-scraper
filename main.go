@@ -10,7 +10,11 @@ import (
 	"github.com/gocolly/colly"
 )
 
-const DATE_FORMAT = "2-January-2006-Monday"
+var DATE_FORMATS = []string{
+	"2-January-2006-Monday",
+	"2-January-2006",
+}
+
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
 const BASE_URL = "https://rccgonline.org/open-heaven-"
 
@@ -141,8 +145,14 @@ func scrapePost(date string) *Post {
 }
 
 func scrapeToday() (post *Post, date string) {
-	date = strings.ToLower(time.Now().Format(DATE_FORMAT))
-	return scrapePost(date), date
+	for _, format := range DATE_FORMATS {
+		date = strings.ToLower(time.Now().Format(format))
+		post = scrapePost(date)
+		if post != nil {
+			return post, date
+		}
+	}
+	return nil, ""
 }
 
 func savePost(post *Post, date string) {
