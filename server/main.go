@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	// TODO: delete this comment, testing auto deploy
 	port := flag.Int("port", 8080, "port to serve")
 	flag.Parse()
 	http.Handle("/", http.FileServer(http.Dir("../")))
