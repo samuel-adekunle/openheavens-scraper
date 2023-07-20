@@ -46,18 +46,14 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 		case 1:
 			if strings.Contains(el.Text, "BIBLE READING") {
 				post.BibleReadingHeading = strings.TrimSpace(el.DOM.Find("strong").Clone().Children().Remove().End().Text())
+				el.ForEach("span", func(_ int, ell *colly.HTMLElement) {
+					post.BibleReadingBody = append(post.BibleReadingBody, strings.TrimSpace(removeMediaRegexp.ReplaceAllString(ell.Text, "")))
+				})
 				mode = 2
 			}
 		case 2:
 			if el.Text == string([]byte{194, 160}) {
 				mode = 3
-			} else {
-				el.ForEach("em", func(_ int, ell *colly.HTMLElement) {
-					tmp := strings.TrimSpace(removeMediaRegexp.ReplaceAllString(ell.Text, ""))
-					if len(tmp) > 0 {
-						post.BibleReadingBody = append(post.BibleReadingBody, tmp)
-					}
-				})
 			}
 		case 3:
 			if el.Text == string([]byte{194, 160}) {
