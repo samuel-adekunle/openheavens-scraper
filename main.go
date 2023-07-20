@@ -84,7 +84,9 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 				mode = 8
 			}
 		case 7:
-			mode = 8
+			if strings.Contains(el.Text, "HYMN") {
+				mode = 8
+			}
 		case 8:
 			if strings.Contains(el.Text, "ONE YEAR") {
 				post.BibleInOneYear = strings.TrimSpace(el.DOM.Find("strong").Clone().Children().Remove().End().Text())
