@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+go version
 TODAY=$(date +'%-d-%B-%Y' | tr '[:upper:]' '[:lower:]')
 echo "Today is ${TODAY}"
 if compgen -G "${TODAY}*.txt" >/dev/null; then
