@@ -7,4 +7,5 @@ if compgen -G "${TODAY}*.txt" >/dev/null; then
 else
     echo "Scraping for today"
     go run main.go post.go
+    curl -X POST ${RENDER_DEPLOY_HOOK}
 fi
