@@ -31,10 +31,8 @@ jobs:
           ./scripts/scrape-post.sh
 
       - uses: stefanzweifel/git-auto-commit-action@v4
-        if: success()
 
       - name: "Deploy website"
-        if: success()
         shell: bash
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
