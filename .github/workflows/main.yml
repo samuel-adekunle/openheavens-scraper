@@ -20,21 +20,25 @@ jobs:
 
       - shell: bash
         run: |
-          ./scrape-post.sh
+          ./scripts/scrape-post.sh
 
       - uses: stefanzweifel/git-auto-commit-action@v4
 
-      - shell: bash
+      - name: "Deploy website if changes have been detected"
+        if: steps.auto-commit-action.outputs.changes_detected == "true"
+        shell: bash
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
-          cd server && ./deploy-server.sh && cd ..
+          ./scripts/deploy-server.sh
 
-      - shell: bash
+      - name: "Notify via Twilio if changes have been detected"
+        if: steps.auto-commit-action.outputs.changes_detected == "true"
+        shell: bash
         env:
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
           TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
           TWILIO_TO_NUMBER: ${{ secrets.TWILIO_TO_NUMBER }}
         run: |
-          cd twilio && ./send-notification.sh && cd ..
+          ./scripts/send-notification.sh
