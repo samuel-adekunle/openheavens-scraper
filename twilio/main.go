@@ -22,7 +22,7 @@ func main() {
 	params := &openapi.CreateMessageParams{}
 	params.SetTo(os.Getenv("TWILIO_TO_NUMBER"))
 	params.SetFrom(os.Getenv("TWILIO_FROM_NUMBER"))
-	params.SetBody(fmt.Sprintf("Openheavens for today has been scraped.\n\nLink: https://myopenheavens.onrender.com/%s.txt", *date))
+	params.SetBody(fmt.Sprintf("Openheavens for today has been scraped.\n\nLink: https://myopenheavens.onrender.com/%s.txt\n\nPlease wait 5-10 minutes for the website to be deployed.", *date))
 	_, err := client.Api.CreateMessage(params)
 	if err != nil {
 		log.Println(err.Error())
