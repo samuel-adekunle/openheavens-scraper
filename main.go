@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -119,7 +120,7 @@ func scrapeToday() (post *Post, date string) {
 }
 
 func savePost(post *Post, date string) {
-	f, err := os.Create(date + ".txt")
+	f, err := os.Create(fmt.Sprintf("./posts/%s.txt", date))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -20,7 +20,7 @@ func addHealthEndpoints(health healthcheck.Handler) {
 
 func addEndpoints(health healthcheck.Handler) {
 	addHealthEndpoints(health)
-	http.Handle("/", http.FileServer(http.Dir("../")))
+	http.Handle("/", http.FileServer(http.Dir("../posts/")))
 }
 
 func main() {
