@@ -136,6 +136,8 @@ func main() {
 	if post != nil {
 		savePost(post)
 		log.Println("Post saved!")
+		sendNotification(post)
+		log.Println("Notification sent!")
 		return
 	}
 	log.Println("Post not scraped!")
