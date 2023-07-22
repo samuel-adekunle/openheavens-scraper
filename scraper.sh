@@ -8,6 +8,6 @@ if compgen -G "./posts/${TODAY}*.txt" >/dev/null; then
     echo "Already scraped for today"
 else
     echo "Scraping for today"
-    go run main.go post.go
+    go run main.go post.go -date=${TODAY} -output=./posts/${TODAY}.txt
     curl -X POST ${RENDER_DEPLOY_HOOK}
 fi

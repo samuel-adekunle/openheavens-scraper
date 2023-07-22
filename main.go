@@ -1,20 +1,24 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/gocolly/colly"
 )
 
-const (
-	DATE_FORMAT = "02-January-2006"
-	USER_AGENT  = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-	BASE_URL    = "https://flatimes.com/open-heaven-"
+var (
+	date   *string
+	output *string
 )
+
+func init() {
+	date = flag.String("date", "", "date to scrape")
+	output = flag.String("output", "", "output file")
+}
 
 func sanitizeString(s string) string {
 	return strings.TrimSpace(s)
@@ -85,11 +89,10 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 	return post
 }
 
-func scrapePost(date string) *Post {
+func scrapePost() *Post {
 	var post *Post
-	postURL := BASE_URL + date + "/"
+	postURL := fmt.Sprintf("https://flatimes.com/open-heaven-%s/", *date)
 	c := colly.NewCollector()
-	c.UserAgent = USER_AGENT
 	c.OnRequest(func(r *colly.Request) {
 		log.Println("Visiting: ", r.URL)
 	})
@@ -103,7 +106,7 @@ func scrapePost(date string) *Post {
 		log.Println(r.Request.URL, " scraped!")
 	})
 	c.OnHTML(".et_pb_text_inner", func(e *colly.HTMLElement) {
-		if !strings.Contains(e.Request.URL.String(), date) {
+		if !strings.Contains(e.Request.URL.String(), *date) {
 			return
 		}
 		post = parsePostHTML(e)
@@ -113,14 +116,8 @@ func scrapePost(date string) *Post {
 	return post
 }
 
-func scrapeToday() (post *Post, date string) {
-	date = strings.ToLower(time.Now().Format(DATE_FORMAT))
-	post = scrapePost(date)
-	return post, date
-}
-
-func savePost(post *Post, date string) {
-	f, err := os.Create(fmt.Sprintf("./posts/%s.txt", date))
+func savePost(post *Post) {
+	f, err := os.Create(*output)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -132,9 +129,10 @@ func savePost(post *Post, date string) {
 }
 
 func main() {
-	post, date := scrapeToday()
+	flag.Parse()
+	post := scrapePost()
 	if post != nil {
-		savePost(post, date)
+		savePost(post)
 		log.Println("Post saved!")
 		return
 	}
