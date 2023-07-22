@@ -20,7 +20,7 @@ jobs:
 
       - shell: bash
         run: |
-          ./scraper.sh
+          ./scrape-post.sh
 
       - uses: stefanzweifel/git-auto-commit-action@v4
 
