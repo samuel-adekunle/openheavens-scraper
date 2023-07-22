@@ -2,7 +2,7 @@ name: Create new post
 
 on:
   schedule:
-    - cron: "30 * * * *"
+    - cron: "0,30 * * * *"
 
 jobs:
   execute-scraper:
@@ -28,7 +28,7 @@ jobs:
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
-          cd server && ./deploy-server.sh
+          cd server && ./deploy-server.sh && cd ..
 
       - shell: bash
         env:
@@ -37,4 +37,4 @@ jobs:
           TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
           TWILIO_TO_NUMBER: ${{ secrets.TWILIO_TO_NUMBER }}
         run: |
-          cd twilio && ./send-notification.sh
+          cd twilio && ./send-notification.sh && cd ..
