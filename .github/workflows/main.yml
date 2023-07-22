@@ -2,7 +2,7 @@ name: Create new post
 
 on:
   schedule:
-    - cron: "30 * * * *"
+    - cron: "23 * * * *"
   workflow_dispatch:
 
 jobs:
