@@ -40,7 +40,7 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 			post.Title = sanitizeString(el.Text)
 			state += 1
 		case 2:
-			post.MemoryVerse = sanitizeString(el.DOM.Clone().Children().Remove().End().Text())
+			post.MemoryVerse = sanitizeString(el.Text)
 			state += 1
 		case 3:
 			post.BibleReadingHeading = sanitizeString(el.Text)
@@ -76,8 +76,9 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 				state = -1
 			}
 		case 9:
-			tmp := sanitizeString(el.Text)
-			if len(tmp) > 0 && tmp[0] >= '0' && tmp[0] <= '9' {
+			html, _ := el.DOM.Html()
+			tmp := sanitizeString(strings.Replace(html, "<br/>", "\n", -1))
+			if len(tmp) > 0 && (tmp[0] >= '0' && tmp[0] <= '9') || strings.Contains(tmp, "Refrain:") {
 				post.HymnBody = append(post.HymnBody, tmp)
 			} else {
 				return
@@ -137,5 +138,5 @@ func main() {
 		log.Println("Post saved!")
 		return
 	}
-	log.Println("Post not found!")
+	log.Println("Post not scraped!")
 }

@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
-go version
-echo $(date)
 TODAY=$(date +'%-d-%B-%Y' | tr '[:upper:]' '[:lower:]')
-echo "Today is ${TODAY}"
 if compgen -G "./posts/${TODAY}*.txt" >/dev/null; then
-    echo "Already scraped for today"
+    echo "Already scraped for today, ${TODAY}"
 else
-    echo "Scraping for today"
+    echo "Scraping for today, ${TODAY}"
     go run main.go post.go -date=${TODAY} -output=./posts/${TODAY}.txt
-    curl -X POST ${RENDER_DEPLOY_HOOK}
+    echo "Scraped for today, ${TODAY}"
 fi
