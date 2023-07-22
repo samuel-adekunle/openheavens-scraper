@@ -60,6 +60,7 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 			}
 		case 6:
 			if el.Name == "h2" {
+				post.IsActionPoint = strings.Contains(el.Text, "ACTION")
 				state += 1
 			} else {
 				post.MessageBody = append(post.MessageBody, sanitizeString(el.Text))

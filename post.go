@@ -12,6 +12,7 @@ type Post struct {
 	BibleReadingBody    []string `json:"bibleReadingBody"`
 	MessageBody         []string `json:"messageBody"`
 	PrayerPoint         string   `json:"prayerPoint"`
+	IsActionPoint       bool     `json:"isActionPoint"`
 	HymnTitle           string   `json:"hymnTitle"`
 	HymnBody            []string `json:"hymnBody"`
 	BibleInOneYear      string   `json:"bibleInOneYear"`
@@ -19,5 +20,9 @@ type Post struct {
 
 // string representation of a post
 func (p Post) String() string {
-	return fmt.Sprintf("*%s*\n\n*MEMORISE:*\n%s\n\n*%s*\n%s\n\n*%s*\n\n*MESSAGE:*\n%s\n\n*PRAYER POINT:*\n%s\n\n*%s*\n%s\n", p.Title, p.MemoryVerse, p.BibleReadingHeading, strings.Join(p.BibleReadingBody, "\n\n"), p.BibleInOneYear, strings.Join(p.MessageBody, "\n\n"), p.PrayerPoint, p.HymnTitle, strings.Join(p.HymnBody, "\n\n"))
+	pointString := "PRAYER POINT"
+	if p.IsActionPoint {
+		pointString = "ACTION POINT"
+	}
+	return fmt.Sprintf("*%s*\n\n*MEMORISE:*\n%s\n\n*%s*\n%s\n\n*%s*\n\n*MESSAGE:*\n%s\n\n*%s:*\n%s\n\n*%s*\n%s\n", p.Title, p.MemoryVerse, p.BibleReadingHeading, strings.Join(p.BibleReadingBody, "\n\n"), p.BibleInOneYear, strings.Join(p.MessageBody, "\n\n"), pointString, p.PrayerPoint, p.HymnTitle, strings.Join(p.HymnBody, "\n\n"))
 }
