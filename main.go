@@ -11,13 +11,15 @@ import (
 )
 
 var (
-	date   *string
-	output *string
+	date     *string
+	textPath *string
+	htmlPath *string
 )
 
 func init() {
 	date = flag.String("date", "", "date to scrape")
-	output = flag.String("output", "", "output file")
+	textPath = flag.String("text", "post.txt", "path to save post text")
+	htmlPath = flag.String("html", "post.html", "path to save post html")
 }
 
 func sanitizeString(s string) string {
@@ -118,27 +120,53 @@ func scrapePost() *Post {
 	return post
 }
 
-func savePost(post *Post) {
-	f, err := os.Create(*output)
+func savePostText(post *Post, path string) {
+	file, err := os.Create(path)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
-	defer f.Close()
-	_, err = f.WriteString(post.String())
+	defer file.Close()
+	_, err = file.WriteString(post.String())
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
+	}
+}
+
+func savePostHTML(post *Post, path string) {
+	file, err := os.Create(path)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer file.Close()
+	err = post.HTMl(file)
+	if err != nil {
+		log.Fatalln(err)
 	}
 }
 
 func main() {
 	flag.Parse()
+	if *date == "" {
+		log.Fatalln("Date not provided!")
+	}
 	post := scrapePost()
-	if post != nil {
-		savePost(post)
-		log.Println("Post saved!")
-		// sendNotification(post)
-		// log.Println("Notification sent!")
+	if post == nil {
+		log.Println("Post not scraped successfully!")
 		return
 	}
-	log.Println("Post not scraped!")
+	log.Println("Post scraped successfully!")
+	if len(*textPath) > 0 {
+		savePostText(post, *textPath)
+		log.Println("Post text saved successfully!")
+	}
+	if len(*htmlPath) > 0 {
+		savePostHTML(post, *htmlPath)
+		log.Println("Post html saved successfully!")
+	}
+	err := sendNotification(post)
+	if err != nil {
+		log.Println(err.Error())
+	} else {
+		log.Println("Notification sent successfully!")
+	}
 }

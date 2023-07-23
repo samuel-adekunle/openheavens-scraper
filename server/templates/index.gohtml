@@ -1,0 +1,18 @@
+{{define "index"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Open Heavens Daily Devotional</title>
+</head>
+<body>
+    <h1>Open Heavens Daily Devotional</h1>
+    <p>Find raw text files <a href="/posts/">here.</a></p>
+    <ul>
+        {{range .}}
+            <li><a href="/posts/{{.}}">{{.}}</a></li>
+        {{end}}
+    </ul>
+</body>
+</html>
+{{end}}

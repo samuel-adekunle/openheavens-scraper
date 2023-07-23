@@ -1,0 +1,42 @@
+{{define "post"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+</head>
+<body>
+    <h1>{{.Title}}</h1>
+    <h2>Memory Verse</h2>
+    <p>{{.MemoryVerse}}</p>
+    <h2>Bible Reading</h2>
+    <p>
+      <strong>{{.BibleReadingHeading}}</strong>
+    </p>
+    {{range .BibleReadingBody}}
+      <p>{{.}}</p>
+    {{end}}
+    <h2>Message</h2>
+    {{range .MessageBody}}
+      <p>{{.}}</p>
+    {{end}}
+    <h2>{{if .IsActionPoint}}Action{{else}}Prayer{{end}} Point</h2>
+    <p>{{.PrayerPoint}}</p>
+    <h2>Hymn</h2>
+    <p>
+      <strong>{{.HymnTitle}}</strong>
+    </p>
+    {{range .HymnBody}}
+        {{if (eq . "")}}
+          <br/>
+        {{else}}
+          <p>{{.}}</p>
+        {{end}}
+    {{end}}
+    <h2>Bible In One Year</h2>
+    <p>
+      <strong>{{.BibleInOneYear}}</strong>
+    </p>
+</body>
+</html>
+{{end}}
