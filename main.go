@@ -78,7 +78,7 @@ func parsePostHTML(e *colly.HTMLElement) (post *Post) {
 		case 9:
 			html, _ := el.DOM.Html()
 			tmp := sanitizeString(strings.Replace(html, "<br/>", "\n", -1))
-			if len(tmp) > 0 && (tmp[0] >= '0' && tmp[0] <= '9') || strings.Contains(tmp, "Refrain:") {
+			if (len(tmp) > 0 && (tmp[0] >= '0' && tmp[0] <= '9')) || strings.Contains(tmp, "Refrain") || strings.Contains(tmp, "Chorus") {
 				post.HymnBody = append(post.HymnBody, tmp)
 			} else {
 				return
@@ -136,8 +136,8 @@ func main() {
 	if post != nil {
 		savePost(post)
 		log.Println("Post saved!")
-		sendNotification(post)
-		log.Println("Notification sent!")
+		// sendNotification(post)
+		// log.Println("Notification sent!")
 		return
 	}
 	log.Println("Post not scraped!")
