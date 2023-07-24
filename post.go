@@ -25,7 +25,7 @@ func (p Post) String() string {
 	if p.IsActionPoint {
 		pointString = "ACTION POINT"
 	}
-	return fmt.Sprintf("*%s*\n\n*MEMORY VERSE*\n%s\n\n*BIBLE READING*\n%s\n%s\n\n*MESSAGE*\n%s\n\n*%s*\n%s\n\n*HYMN*\n%s\n%s\n\n*BIBLE IN ONE YEAR*\n%s\n", p.Title, p.MemoryVerse, p.BibleReadingHeading, strings.Join(p.BibleReadingBody, "\n\n"), strings.Join(p.MessageBody, "\n\n"), pointString, p.PrayerPoint, p.HymnTitle, strings.Join(p.HymnBody, "\n\n"), p.BibleInOneYear)
+	return fmt.Sprintf("*%s*\n\n*MEMORY VERSE*\n%s\n\n*BIBLE READING*\n%s\n\n%s\n\n*MESSAGE*\n%s\n\n*%s*\n%s\n\n*HYMN*\n%s\n\n%s\n\n*BIBLE IN ONE YEAR*\n%s\n", p.Title, p.MemoryVerse, p.BibleReadingHeading, strings.Join(p.BibleReadingBody, "\n\n"), strings.Join(p.MessageBody, "\n\n"), pointString, p.PrayerPoint, p.HymnTitle, strings.Join(p.HymnBody, "\n\n"), p.BibleInOneYear)
 }
 
 func (p *Post) HTMl(w io.Writer) (err error) {
