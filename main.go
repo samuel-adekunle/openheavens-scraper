@@ -163,10 +163,4 @@ func main() {
 		savePostHTML(post, *htmlPath)
 		log.Println("Post html saved successfully!")
 	}
-	err := sendNotification(post)
-	if err != nil {
-		log.Println(err.Error())
-	} else {
-		log.Println("Notification sent successfully!")
-	}
 }
