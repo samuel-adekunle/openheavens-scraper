@@ -2,7 +2,7 @@ name: Create new post
 
 on:
   schedule:
-    - cron: "23 * * * *"
+    - cron: "30 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -22,11 +22,6 @@ jobs:
       - run: go version
 
       - shell: bash
-        env:
-          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
-          TWILIO_TO_NUMBER: ${{ secrets.TWILIO_TO_NUMBER }}
         run: |
           ./scripts/scrape-post.sh
 
